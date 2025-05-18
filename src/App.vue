@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import CustomRangePicker from './components/CustomRangePicker.vue';
+import type { IDictType } from './shared/types/dictionaryTypes';
+import { createDictFromListArray } from './shared/utils/dictionaries';
 
 const selectedData = ref({});
 
-const allowedOptions = [
+const allowedOptions: string[] = [
   'last-7-days',
   'this-month',
   'year',
@@ -18,6 +20,8 @@ const allowedOptions = [
   'date-to',
   'date-from-to',
 ];
+
+const allowedOptionsDict: IDictType[] = createDictFromListArray(allowedOptions);
 </script>
 
 <template>
@@ -25,7 +29,7 @@ const allowedOptions = [
     <h1 class="text-xl font-bold mb-4">Customisable Calendar Component</h1>
 
     <CustomRangePicker
-      :select-options="allowedOptions"
+      :allowedOptionsDict="allowedOptionsDict"
       :min-date="'2022-01-01'"
       :max-date="'2025-12-31'"
       :min-value="1"

@@ -1,3 +1,4 @@
+import { createDictFromListArray } from '@/shared/utils/dictionaries';
 import { mount } from '@vue/test-utils';
 import CustomRangePicker from '../CustomRangePicker.vue';
 
@@ -5,7 +6,7 @@ describe('CustomRangePicker - extended tests', () => {
   it('emits correct JSON for last-7-days shortcut', async () => {
     const wrapper = mount(CustomRangePicker, {
       props: {
-        selectOptions: ['last-7-days'],
+        allowedOptionsDict: createDictFromListArray(['last-7-days']),
       },
     });
 
@@ -21,7 +22,7 @@ describe('CustomRangePicker - extended tests', () => {
   it('emits correct JSON for this-month shortcut', async () => {
     const wrapper = mount(CustomRangePicker, {
       props: {
-        selectOptions: ['this-month'],
+        allowedOptionsDict: createDictFromListArray(['this-month']),
       },
     });
 
@@ -36,7 +37,7 @@ describe('CustomRangePicker - extended tests', () => {
   it('resets from/to when changing from shortcut to input mode', async () => {
     const wrapper = mount(CustomRangePicker, {
       props: {
-        selectOptions: ['this-month', 'minute'],
+        allowedOptionsDict: createDictFromListArray(['this-month', 'minute']),
         minValue: 1,
         maxValue: 300,
       },

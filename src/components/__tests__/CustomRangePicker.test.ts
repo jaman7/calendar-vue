@@ -1,3 +1,4 @@
+import { createDictFromListArray } from '@/shared/utils/dictionaries';
 import { mount } from '@vue/test-utils';
 import CustomRangePicker from '../CustomRangePicker.vue';
 
@@ -13,7 +14,7 @@ describe('CustomRangePicker', () => {
     it(`emits correct JSON for time unit mode: ${mode}`, async () => {
       const wrapper = mount(CustomRangePicker, {
         props: {
-          selectOptions: [mode],
+          allowedOptionsDict: createDictFromListArray([mode]),
           minValue,
           maxValue,
         },
@@ -31,7 +32,7 @@ describe('CustomRangePicker', () => {
   it('emits correct JSON for date-from mode', async () => {
     const wrapper = mount(CustomRangePicker, {
       props: {
-        selectOptions: ['date-from'],
+        allowedOptionsDict: createDictFromListArray(['date-from']),
         minDate,
         maxDate,
       },
@@ -48,7 +49,7 @@ describe('CustomRangePicker', () => {
   it('emits correct JSON for date-to mode', async () => {
     const wrapper = mount(CustomRangePicker, {
       props: {
-        selectOptions: ['date-to'],
+        allowedOptionsDict: createDictFromListArray(['date-to']),
         minDate,
         maxDate,
       },
@@ -65,7 +66,7 @@ describe('CustomRangePicker', () => {
   it('emits correct JSON for date-from-to mode', async () => {
     const wrapper = mount(CustomRangePicker, {
       props: {
-        selectOptions: ['date-from-to'],
+        allowedOptionsDict: createDictFromListArray(['date-from-to']),
         minDate,
         maxDate,
       },
@@ -87,7 +88,7 @@ describe('CustomRangePicker', () => {
   it('shows error when "from" > "to" in date-from-to mode', async () => {
     const wrapper = mount(CustomRangePicker, {
       props: {
-        selectOptions: ['date-from-to'],
+        allowedOptionsDict: createDictFromListArray(['date-from-to']),
       },
     });
 

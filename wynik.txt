@@ -1,0 +1,768 @@
+.prettierrc.json
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 140,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "useEditorConfig": true
+}
+
+env.d.ts
+/// <reference types="vite/client" />
+/// <reference types="vitest" />
+
+declare module '*.vue' {
+  import { DefineComponent } from 'vue';
+  const component: DefineComponent<{}, {}, any>;
+  export default component;
+}
+
+eslint.config.ts
+import pluginVitest from '@vitest/eslint-plugin';
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
+import pluginVue from 'eslint-plugin-vue';
+import { globalIgnores } from 'eslint/config';
+// To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
+// import { configureVueProject } from '@vue/eslint-config-typescript'
+// configureVueProject({ scriptLangs: ['ts', 'tsx'] })
+// More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
+
+export default defineConfigWithVueTs(
+  {
+    name: 'app/files-to-lint',
+    files: ['**/*.{ts,mts,tsx,vue}'],
+  },
+
+  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+
+  pluginVue.configs['flat/essential'],
+  vueTsConfigs.recommended,
+
+  {
+    ...pluginVitest.configs.recommended,
+    files: ['**/__tests__/**/*', '**/*.spec.*', '**/*.test.*'],
+  },
+
+  skipFormatting
+);
+
+index.html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Vue + TS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-roboto bg-white text-sm antialiased subpixel-antialiased text-black">
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+
+package.json
+{
+  "name": "customisable-calendar-component",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:ui": "vitest --ui",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build",
+    "lint": "eslint . --fix",
+    "format": "prettier --write src/",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": "eslint --fix",
+    "*.{js,ts,vue,css,scss,html,json,md}": "prettier --write"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
+    "@vueuse/core": "^13.2.0",
+    "date-fns": "^4.1.0",
+    "tailwindcss": "^4.1.7",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@tsconfig/node22": "^22.0.1",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vitejs/plugin-vue-jsx": "^4.1.2",
+    "@vitest/coverage-v8": "^3.1.3",
+    "@vitest/eslint-plugin": "^1.1.39",
+    "@vitest/ui": "^3.1.3",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.5.0",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.22.0",
+    "eslint-import-resolver-typescript": "^4.3.4",
+    "eslint-plugin-vue": "~10.0.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.4.2",
+    "jsdom": "^26.0.0",
+    "lint-staged": "^16.0.0",
+    "npm-run-all2": "^7.0.2",
+    "postcss": "^8.5.3",
+    "prettier": "3.5.3",
+    "sass": "^1.89.0",
+    "stylelint": "^16.19.1",
+    "stylelint-config-recommended": "^16.0.0",
+    "stylelint-config-standard-scss": "^15.0.0",
+    "stylelint-order": "^7.0.0",
+    "typescript": "~5.8.0",
+    "unplugin-auto-import": "^19.2.0",
+    "unplugin-vue-components": "^28.5.0",
+    "vite": "^6.2.4",
+    "vite-plugin-vue-devtools": "^7.7.2",
+    "vitest": "^3.1.3",
+    "vue-tsc": "^2.2.8"
+  },
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "yoavbls.pretty-ts-errors"
+  ],
+  "browserslist": [
+    "last 5 Chrome versions",
+    "last 15 Firefox versions",
+    "last 4 Edge major versions",
+    "last 4 Safari major versions",
+    "last 2 iOS major versions",
+    "Firefox ESR",
+    "not ios_saf 15.2-15.3",
+    "not safari 15.2-15.3"
+  ]
+}
+
+postcss.config.mjs
+export default { plugins: { '@tailwindcss/postcss': {} } };
+
+tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+
+export default {
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  theme: {
+    fontFamily: {
+      roboto: ['Roboto', 'sans-serif'],
+    },
+  },
+};
+
+tsconfig.app.json
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "src/**/*.test.ts"
+  ],
+  "exclude": [
+    "src/**/__tests__/*"
+  ],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  }
+}
+
+tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@scss/*": [
+        "src/assests/scss/*"
+      ]
+    }
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
+  ]
+}
+
+tsconfig.node.json
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "include": [
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "nightwatch.conf.*",
+    "playwright.config.*",
+    "eslint.config.*"
+  ],
+  "compilerOptions": {
+    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node"]
+  }
+}
+
+tsconfig.vitest.json
+{
+  "extends": "./tsconfig.app.json",
+  "include": [
+    "src/**/__tests__/*",
+    "env.d.ts"
+  ],
+  "exclude": [],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+    "lib": [],
+    "types": [
+      "vitest",
+      "node",
+      "jsdom"
+    ]
+  }
+}
+
+vite.config.ts
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import path from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import { VueUseComponentsResolver } from 'unplugin-vue-components/resolvers'; // opcjonalne
+import Components from 'unplugin-vue-components/vite';
+import { defineConfig } from 'vite';
+import vueDevTools from 'vite-plugin-vue-devtools';
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    vue(),
+    vueJsx(),
+    vueDevTools(),
+    AutoImport({
+      imports: ['vue', 'vue-router', '@vueuse/core'],
+      dts: 'src/auto-imports.d.ts',
+      vueTemplate: true,
+    }),
+    Components({
+      dirs: ['src/components'],
+      extensions: ['vue'],
+      deep: true,
+      dts: 'src/components.d.ts',
+      resolvers: [VueUseComponentsResolver()],
+    }),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@utils': path.resolve(__dirname, './src/shared/utils'),
+      '@scss': path.resolve(__dirname, './src/assests/scss'),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true,
+        api: 'modern-compiler',
+        silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import'],
+      },
+    },
+    devSourcemap: true,
+  },
+  build: {
+    target: 'esnext',
+  },
+  define: {
+    'process.env': {},
+  },
+  worker: {
+    format: 'es',
+  },
+});
+
+vitest.config.ts
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { configDefaults, defineConfig, mergeConfig } from 'vitest/config';
+import viteConfig from './vite.config';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export default mergeConfig(
+  viteConfig,
+  defineConfig({
+    test: {
+      environment: 'jsdom',
+      exclude: [...configDefaults.exclude, 'e2e/**'],
+      root: __dirname,
+      setupFiles: ['./vitest.setup.ts'],
+      globals: true,
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'json', 'html'],
+      },
+    },
+  })
+);
+
+vitest.setup.ts
+import * as matchers from '@testing-library/jest-dom/matchers';
+import { expect } from 'vitest';
+
+expect.extend(matchers);
+
+src\App.vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CustomRangePicker from './components/CustomRangePicker.vue';
+import type { IDictType } from './shared/types/dictionaryTypes';
+import { createDictFromListArray } from './shared/utils/dictionaries';
+
+const selectedData = ref({});
+
+const allowedOptions: string[] = [
+  'last-7-days',
+  'this-month',
+  'year',
+  'quarter',
+  'month',
+  'week',
+  'day',
+  'hour',
+  'minute',
+  'date-from',
+  'date-to',
+  'date-from-to',
+];
+
+const allowedOptionsDict: IDictType[] = createDictFromListArray(allowedOptions);
+</script>
+
+<template>
+  <div class="min-h-screen p-10 bg-gray-50">
+    <h1 class="text-xl font-bold mb-4">Customisable Calendar Component</h1>
+
+    <CustomRangePicker
+      :allowedOptionsDict="allowedOptionsDict"
+      :min-date="'2022-01-01'"
+      :max-date="'2025-12-31'"
+      :min-value="1"
+      :max-value="1000"
+      v-model="selectedData"
+    />
+
+    <div class="mt-6 p-4 bg-white rounded-lg shadow">
+      <h2 class="font-semibold mb-2">Output JSON:</h2>
+      <pre class="text-sm bg-gray-100 p-2 rounded-lg shadow">{{ selectedData }}</pre>
+    </div>
+  </div>
+</template>
+
+src\main.ts
+import { createApp } from 'vue';
+import App from './App.vue';
+import './assests/scss/main.scss';
+
+const app = createApp(App);
+
+app.mount('#app');
+
+src\assests\scss\main.scss
+@use './tailwind.css' as *;
+
+src\assests\scss\tailwind.css
+@import 'tailwindcss';
+
+@layer utilities {
+  .font-roboto {
+    font-family: Roboto, sans-serif;
+  }
+}
+
+src\components\CustomRangePicker.vue
+<script setup lang="ts">
+import type { IDictType } from '@/shared/types/dictionaryTypes';
+import { format } from 'date-fns';
+import { computed, ref, watch } from 'vue';
+import DatePicker from './parts/DatePicker.vue';
+import ModeSelect from './parts/ModeSelect.vue';
+import ValueInput from './parts/ValueInput.vue';
+
+interface IProps {
+  allowedOptionsDict: IDictType[];
+  minDate?: string;
+  maxDate?: string;
+  minValue?: number;
+  maxValue?: number;
+}
+
+const props = defineProps<IProps>();
+const emit = defineEmits(['update:modelValue']);
+
+const errorMessage = ref('');
+const mode = ref('');
+const value = ref<number | null>(null);
+const from = ref('');
+const to = ref('');
+
+const formatDate = (d: Date) => format(d, 'yyyy-MM-dd');
+
+const applyShortcut = (modeVal: string) => {
+  const d = new Date();
+  if (modeVal === 'last-7-days') {
+    const fromDate = new Date(d);
+    fromDate.setDate(d.getDate() - 6);
+    from.value = formatDate(fromDate);
+    to.value = formatDate(d);
+  }
+  if (modeVal === 'this-month') {
+    const start = new Date(d.getFullYear(), d.getMonth(), 1);
+    const end = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    from.value = formatDate(start);
+    to.value = formatDate(end);
+  }
+};
+
+const showInput = computed(() => ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute'].indexOf(mode.value) > -1);
+
+const showFrom = computed(() => ['date-from', 'date-from-to', 'last-7-days', 'this-month'].indexOf(mode.value) > -1);
+
+const showTo = computed(() => ['date-to', 'date-from-to', 'last-7-days', 'this-month'].indexOf(mode.value) > -1);
+
+watch(mode, (newMode) => {
+  if (['last-7-days', 'this-month'].indexOf(newMode) > -1) {
+    applyShortcut(newMode);
+  } else {
+    from.value = '';
+    to.value = '';
+  }
+});
+
+watch([mode, value, from, to], () => {
+  errorMessage.value = '';
+
+  if (showFrom.value && showTo.value && from.value && to.value) {
+    if (new Date(from.value) > new Date(to.value)) {
+      errorMessage.value = 'Date From cannot be later than Date To';
+    }
+  }
+
+  emit('update:modelValue', {
+    mode: mode.value,
+    ...(showInput.value ? { value: value.value } : {}),
+    ...(showFrom.value ? { from: from.value } : {}),
+    ...(showTo.value ? { to: to.value } : {}),
+    error: errorMessage.value || undefined,
+  });
+});
+</script>
+
+<template>
+  <div class="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
+    <div>
+      <label class="text-sm text-gray-600 mb-1 block">Select time mode</label>
+      <ModeSelect v-model="mode" :dict="props.allowedOptionsDict" />
+    </div>
+
+    <div v-if="showInput">
+      <label class="text-sm text-gray-600 mb-1 block">Enter value</label>
+      <ValueInput v-model="value" :min="props.minValue" :max="props.maxValue" />
+    </div>
+
+    <div v-if="showFrom">
+      <label class="text-sm text-gray-600 mb-1 block">From</label>
+      <DatePicker v-model="from" :min="props.minDate" :max="props.maxDate" />
+    </div>
+
+    <div v-if="showTo">
+      <label class="text-sm text-gray-600 mb-1 block">To</label>
+      <DatePicker v-model="to" :min="props.minDate" :max="props.maxDate" />
+    </div>
+
+    <p v-if="errorMessage" class="text-red-500 text-sm mt-1">{{ errorMessage }}</p>
+  </div>
+</template>
+
+src\components\parts\DatePicker.vue
+<script setup lang="ts">
+defineProps<{
+  modelValue: string;
+  min?: string;
+  max?: string;
+}>();
+const emit = defineEmits(['update:modelValue']);
+</script>
+
+<template>
+  <input
+    type="date"
+    :value="modelValue"
+    @input="$emit('update:modelValue', ($event?.target as HTMLInputElement)?.value)"
+    class="p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+    :min="min"
+    :max="max"
+  />
+</template>
+
+src\components\parts\ModeSelect.vue
+<script setup lang="ts">
+import type { IDictType } from '@/shared/types/dictionaryTypes';
+
+defineProps<{
+  modelValue: string;
+  dict: IDictType[];
+}>();
+const emit = defineEmits(['update:modelValue']);
+</script>
+
+<template>
+  <select
+    :value="modelValue"
+    @change="$emit('update:modelValue', ($event.target as HTMLSelectElement)?.value)"
+    class="p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="">Select mode</option>
+    <option v-for="opt in dict" :key="opt.id" :value="opt.id">
+      {{ opt.displayName }}
+    </option>
+  </select>
+</template>
+
+src\components\parts\ValueInput.vue
+<script setup lang="ts">
+defineProps<{
+  modelValue: number | null;
+  min?: number;
+  max?: number;
+}>();
+const emit = defineEmits(['update:modelValue']);
+</script>
+
+<template>
+  <input
+    type="number"
+    :value="modelValue ?? ''"
+    @input="$emit('update:modelValue', ($event?.target as HTMLInputElement)?.valueAsNumber)"
+    class="p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+    :min="min"
+    :max="max"
+    placeholder="Enter value"
+  />
+</template>
+
+src\components\__tests__\CustomRangePicker.extended.test.ts
+import { createDictFromListArray } from '@/shared/utils/dictionaries';
+import { mount } from '@vue/test-utils';
+import CustomRangePicker from '../CustomRangePicker.vue';
+
+describe('CustomRangePicker - extended tests', () => {
+  it('emits correct JSON for last-7-days shortcut', async () => {
+    const wrapper = mount(CustomRangePicker, {
+      props: {
+        allowedOptionsDict: createDictFromListArray(['last-7-days']),
+      },
+    });
+
+    await wrapper.find('select').setValue('last-7-days');
+    const emitted = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+
+    expect(emitted.mode).toBe('last-7-days');
+    expect(emitted.from).toBeDefined();
+    expect(emitted.to).toBeDefined();
+    expect(new Date(emitted.from) <= new Date(emitted.to)).toBeTruthy();
+  });
+
+  it('emits correct JSON for this-month shortcut', async () => {
+    const wrapper = mount(CustomRangePicker, {
+      props: {
+        allowedOptionsDict: createDictFromListArray(['this-month']),
+      },
+    });
+
+    await wrapper.find('select').setValue('this-month');
+    const emitted = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+
+    expect(emitted.mode).toBe('this-month');
+    expect(emitted.from).toMatch(/\d{4}-\d{2}-01/);
+    expect(emitted.to).toMatch(/\d{4}-\d{2}-\d{2}/);
+  });
+
+  it('resets from/to when changing from shortcut to input mode', async () => {
+    const wrapper = mount(CustomRangePicker, {
+      props: {
+        allowedOptionsDict: createDictFromListArray(['this-month', 'minute']),
+        minValue: 1,
+        maxValue: 300,
+      },
+    });
+
+    await wrapper.find('select').setValue('this-month');
+    const emitted1 = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+    expect(emitted1.from).toBeTruthy();
+
+    await wrapper.find('select').setValue('minute');
+    const emitted2 = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+    expect(emitted2.from).toBeUndefined();
+    expect(emitted2.to).toBeUndefined();
+  });
+});
+
+src\components\__tests__\CustomRangePicker.test.ts
+import { createDictFromListArray } from '@/shared/utils/dictionaries';
+import { mount } from '@vue/test-utils';
+import CustomRangePicker from '../CustomRangePicker.vue';
+
+describe('CustomRangePicker', () => {
+  const timeModes = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute'];
+  const dateModes = ['date-from', 'date-to', 'date-from-to'];
+  const minDate = '2022-01-01';
+  const maxDate = '2025-12-31';
+  const minValue = 1;
+  const maxValue = 999;
+
+  timeModes.forEach((mode) => {
+    it(`emits correct JSON for time unit mode: ${mode}`, async () => {
+      const wrapper = mount(CustomRangePicker, {
+        props: {
+          allowedOptionsDict: createDictFromListArray([mode]),
+          minValue,
+          maxValue,
+        },
+      });
+
+      await wrapper.find('select').setValue(mode);
+      const input = wrapper.find('input[type="number"]');
+      await input.setValue(123);
+
+      const emitted = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+      expect(emitted).toEqual({ mode, value: 123 });
+    });
+  });
+
+  it('emits correct JSON for date-from mode', async () => {
+    const wrapper = mount(CustomRangePicker, {
+      props: {
+        allowedOptionsDict: createDictFromListArray(['date-from']),
+        minDate,
+        maxDate,
+      },
+    });
+
+    await wrapper.find('select').setValue('date-from');
+    const input = wrapper.find('input[type="date"]');
+    await input.setValue('2023-05-01');
+
+    const emitted = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+    expect(emitted).toEqual({ mode: 'date-from', from: '2023-05-01' });
+  });
+
+  it('emits correct JSON for date-to mode', async () => {
+    const wrapper = mount(CustomRangePicker, {
+      props: {
+        allowedOptionsDict: createDictFromListArray(['date-to']),
+        minDate,
+        maxDate,
+      },
+    });
+
+    await wrapper.find('select').setValue('date-to');
+    const input = wrapper.find('input[type="date"]');
+    await input.setValue('2023-05-31');
+
+    const emitted = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+    expect(emitted).toEqual({ mode: 'date-to', to: '2023-05-31' });
+  });
+
+  it('emits correct JSON for date-from-to mode', async () => {
+    const wrapper = mount(CustomRangePicker, {
+      props: {
+        allowedOptionsDict: createDictFromListArray(['date-from-to']),
+        minDate,
+        maxDate,
+      },
+    });
+
+    await wrapper.find('select').setValue('date-from-to');
+    const inputs = wrapper.findAll('input[type="date"]');
+    await inputs[0].setValue('2023-06-01');
+    await inputs[1].setValue('2023-06-10');
+
+    const emitted = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+    expect(emitted).toEqual({
+      mode: 'date-from-to',
+      from: '2023-06-01',
+      to: '2023-06-10',
+    });
+  });
+
+  it('shows error when "from" > "to" in date-from-to mode', async () => {
+    const wrapper = mount(CustomRangePicker, {
+      props: {
+        allowedOptionsDict: createDictFromListArray(['date-from-to']),
+      },
+    });
+
+    await wrapper.find('select').setValue('date-from-to');
+    const inputs = wrapper.findAll('input[type="date"]');
+    await inputs[0].setValue('2023-07-10');
+    await inputs[1].setValue('2023-07-01');
+
+    const emitted = wrapper.emitted()['update:modelValue']?.at(-1)?.[0];
+    expect(emitted.error).toBe('Date From cannot be later than Date To');
+  });
+});
+
+src\shared\types\dictionaryTypes.ts
+export interface IDictType {
+  displayName?: string;
+  id?: number | string;
+  [name: string]: any;
+}
+
+src\shared\utils\dictionaries.ts
+import type { IDictType } from '../types/dictionaryTypes';
+
+export const createDictFromListArray = (listNames: string[]): IDictType[] => {
+  return listNames?.map((key) => ({ id: key, displayName: key })) ?? [];
+};
+

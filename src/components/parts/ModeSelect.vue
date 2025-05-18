@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { IDictType } from '@/shared/types/dictionaryTypes';
+
 defineProps<{
   modelValue: string;
-  options: string[];
+  dict: IDictType[];
 }>();
 const emit = defineEmits(['update:modelValue']);
 </script>
@@ -13,8 +15,8 @@ const emit = defineEmits(['update:modelValue']);
     class="p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
   >
     <option value="">Select mode</option>
-    <option v-for="opt in options" :key="opt" :value="opt">
-      {{ opt }}
+    <option v-for="opt in dict" :key="opt.id" :value="opt.id">
+      {{ opt.displayName }}
     </option>
   </select>
 </template>

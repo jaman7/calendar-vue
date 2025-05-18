@@ -1,19 +1,20 @@
 <script setup lang="ts">
+import type { IDictType } from '@/shared/types/dictionaryTypes';
 import { format } from 'date-fns';
 import { computed, ref, watch } from 'vue';
 import DatePicker from './parts/DatePicker.vue';
 import ModeSelect from './parts/ModeSelect.vue';
 import ValueInput from './parts/ValueInput.vue';
 
-interface Props {
-  selectOptions: string[];
+interface IProps {
+  allowedOptionsDict: IDictType[];
   minDate?: string;
   maxDate?: string;
   minValue?: number;
   maxValue?: number;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 const emit = defineEmits(['update:modelValue']);
 
 const errorMessage = ref('');
@@ -40,18 +41,14 @@ const applyShortcut = (modeVal: string) => {
   }
 };
 
-const showInput = computed(() =>
-  ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute'].includes(mode.value)
-);
-const showFrom = computed(() =>
-  ['date-from', 'date-from-to', 'last-7-days', 'this-month'].includes(mode.value)
-);
-const showTo = computed(() =>
-  ['date-to', 'date-from-to', 'last-7-days', 'this-month'].includes(mode.value)
-);
+const showInput = computed(() => ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute'].indexOf(mode.value) > -1);
+
+const showFrom = computed(() => ['date-from', 'date-from-to', 'last-7-days', 'this-month'].indexOf(mode.value) > -1);
+
+const showTo = computed(() => ['date-to', 'date-from-to', 'last-7-days', 'this-month'].indexOf(mode.value) > -1);
 
 watch(mode, (newMode) => {
-  if (['last-7-days', 'this-month'].includes(newMode)) {
+  if (['last-7-days', 'this-month'].indexOf(newMode) > -1) {
     applyShortcut(newMode);
   } else {
     from.value = '';
@@ -82,7 +79,7 @@ watch([mode, value, from, to], () => {
   <div class="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
     <div>
       <label class="text-sm text-gray-600 mb-1 block">Select time mode</label>
-      <ModeSelect v-model="mode" :options="props.selectOptions" />
+      <ModeSelect v-model="mode" :dict="props.allowedOptionsDict" />
     </div>
 
     <div v-if="showInput">
@@ -103,10 +100,3 @@ watch([mode, value, from, to], () => {
     <p v-if="errorMessage" class="text-red-500 text-sm mt-1">{{ errorMessage }}</p>
   </div>
 </template>
-
-<style scoped>
-input,
-select {
-  @apply border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
-}
-</style>
