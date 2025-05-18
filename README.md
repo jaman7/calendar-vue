@@ -4,15 +4,15 @@
 
 ### Clone the repository and install dependencies:
 
-````bash
+```bash
 git clone https://github.com/jaman7/calendar-vue.git .
----
+```
 
 ## Project Setup
 
 ```bash
 npm install
-````
+```
 
 ### Compile and Hot-Reload for Development
 
