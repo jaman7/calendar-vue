@@ -15,7 +15,7 @@ const emit = defineEmits(['update:modelValue']);
     class="p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
   >
     <option value="">Select mode</option>
-    <option v-for="opt in dict" :key="opt.id" :value="opt.id">
+    <option v-for="opt in dict" :key="opt.id" :value="opt.displayName">
       {{ opt.displayName }}
     </option>
   </select>

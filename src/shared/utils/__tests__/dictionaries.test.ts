@@ -24,9 +24,9 @@ describe('createDictFromListArray', () => {
     const input = ['one', 'two', 'three'];
     const result = createDictFromListArray(input);
     expect(result).toEqual([
-      { id: 'one', displayName: 'one' },
-      { id: 'two', displayName: 'two' },
-      { id: 'three', displayName: 'three' },
+      { id: 1, displayName: 'one' },
+      { id: 2, displayName: 'two' },
+      { id: 3, displayName: 'three' },
     ]);
   });
 
